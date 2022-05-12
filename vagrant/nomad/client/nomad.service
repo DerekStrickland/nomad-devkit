@@ -1,0 +1,21 @@
+[Unit]
+Description=Nomad Service
+Requires=network-online.target
+After=network-online.target
+
+[Service]
+LimitAS=infinity
+LimitRSS=infinity
+LimitCORE=infinity
+LimitNOFILE=infinity
+User=root
+EnvironmentFile=-/etc/sysconfig/nomad
+Environment=GOMAXPROCS=2
+Restart=on-failure
+ExecStart=/opt/gopath/bin/nomad agent $OPTIONS -config=/etc/nomad.d
+ExecReload=/bin/kill -HUP $MAINPID
+KillSignal=SIGINT
+StandardOutput=journal
+
+[Install]
+WantedBy=multi-user.target
