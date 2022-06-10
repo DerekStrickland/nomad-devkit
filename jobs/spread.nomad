@@ -4,7 +4,7 @@ job "spread" {
   group "cache" {
     count = 6
 
-    #max_client_disconnect = "2m"
+    max_client_disconnect = "2m"
     
     spread {
       attribute  = "${attr.unique.hostname}"
