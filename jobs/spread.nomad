@@ -7,7 +7,7 @@ job "spread" {
     max_client_disconnect = "2m"
     
     spread {
-      attribute = "${node.datacenter}"
+      attribute  = "${attr.unique.hostname}"
     }
 
     network {
