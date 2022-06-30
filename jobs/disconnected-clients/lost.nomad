@@ -1,11 +1,11 @@
-job "no-max-spread" {
+job "edge" {
   datacenters = ["dc1"]
 
   group "cache" {
-    count = 2
-    
+    count = 6
+
     spread {
-      attribute = "${node.datacenter}"
+      attribute = "${attr.unique.hostname}"
     }
 
     network {
@@ -19,13 +19,12 @@ job "no-max-spread" {
 
       config {
         image = "redis:3.2"
-
         ports = ["db"]
       }
 
       resources {
-        cpu    = 500
-        memory = 256
+        cpu    = 100
+        memory = 64
       }
     }
   }

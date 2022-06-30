@@ -1,11 +1,13 @@
-job "spread" {
+job "edge" {
   datacenters = ["dc1"]
 
   group "cache" {
-    count = 2
+    count = 6
+
+    max_client_disconnect = "2m"
     
     spread {
-      attribute = "${node.datacenter}"
+      attribute  = "${attr.unique.hostname}"
     }
 
     network {
@@ -24,8 +26,8 @@ job "spread" {
       }
 
       resources {
-        cpu    = 500
-        memory = 256
+        cpu    = 100
+        memory = 64
       }
     }
   }

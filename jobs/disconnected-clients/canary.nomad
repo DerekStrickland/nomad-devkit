@@ -1,4 +1,4 @@
-job "canary" {
+job "edge" {
   datacenters = ["dc1"]
 
   group "cache" {
@@ -15,10 +15,10 @@ job "canary" {
 
 
     max_client_disconnect = "2m"
-    
+
     spread {
       attribute = "${node.unique.name}"
-      weight = 100
+      weight    = 100
     }
 
     network {
@@ -31,14 +31,14 @@ job "canary" {
       driver = "docker"
 
       config {
-        image = "redis:5.0"
+        image = "redis:3.2"
 
         ports = ["db"]
       }
 
       resources {
-        cpu    = 500
-        memory = 256
+        cpu    = 100
+        memory = 64
       }
     }
   }
