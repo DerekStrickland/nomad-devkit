@@ -5,7 +5,7 @@ job "disco-service" {
   type = "service"
 
   group "app" {
-    count = 6
+    count = 3
 
     max_client_disconnect = "2m"
 
@@ -41,8 +41,8 @@ job "disco-service" {
       }
 
       resources {
-        cpu    = 200
-        memory = 256
+        cpu    = 128
+        memory = 128
       }
     }
 
@@ -69,8 +69,8 @@ http {
       }
 
       resources {
-        cpu    = 500
-        memory = 256
+        cpu    = 128
+        memory = 128
       }
     }
   }

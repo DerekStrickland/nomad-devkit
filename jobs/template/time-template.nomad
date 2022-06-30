@@ -1,6 +1,6 @@
 job "time-template" {
   datacenters = ["dc1"]
-  
+
   group "cache" {
     count = 6
 
@@ -32,8 +32,8 @@ job "time-template" {
       }
 
       resources {
-        cpu    = 500
-        memory = 256
+        cpu    = 100
+        memory = 64
       }
     }
   }
