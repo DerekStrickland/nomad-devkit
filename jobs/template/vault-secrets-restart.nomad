@@ -1,4 +1,4 @@
-job "vault-secrets" {
+job "vault-secrets-restart" {
   datacenters = ["dc1"]
 
   constraint {
@@ -6,6 +6,7 @@ job "vault-secrets" {
     value     = "linux"
   }
 
+  #  This is optional config. I set this because I always use node2 to test connectivity problems.
   constraint {
     attribute = "${attr.unique.hostname}"
     value     = "node-client-2"
@@ -21,11 +22,12 @@ job "vault-secrets" {
       config {
         image   = "busybox:1"
         command = "/bin/sh"
-        args    = ["-c", "sleep 300"]
+        args    = ["-c", "sleep 3000"]
       }
 
       vault {
-        policies = ["access-secrets-devkit"]
+        policies    = ["access-secrets-devkit"]
+        change_mode = "restart"
       }
 
       template {
