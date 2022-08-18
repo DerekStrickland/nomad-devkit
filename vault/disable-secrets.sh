@@ -1,7 +1,6 @@
 #!/bin/sh
 
 ID="${ID:=devkit}"
-TTL="${TTL:=10s}"
 
 secretsPath="${ID}-secrets/"
 pkiPath="${ID}-pki/"

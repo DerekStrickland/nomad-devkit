@@ -26,27 +26,29 @@ job "vault-secrets-kill" {
       }
 
       vault {
-        policies    = ["access-secrets-devkit"]
-        change_mode = "restart"
+        policies      = ["access-secrets-devkit"]
+        change_mode   = "signal"
+        change_signal = "SIGINT"
       }
 
       template {
-        on_error = "kill"
-        data     = <<EOT
+        change_mode   = "signal"
+        change_signal = "SIGINT"
+        data          = <<EOT
 {{ with secret "devkit-pki/issue/nomad" "common_name=nomad.service.consul" "ip_sans=127.0.0.1" }}
 {{- .Data.certificate -}}
 {{ end }}
 EOT
 
         destination = "${NOMAD_SECRETS_DIR}/certificate.crt"
-        change_mode = "noop"
       }
 
       template {
-        on_error = "ignore"
-        data     = <<EOT
-SOME_SECRET={{ with secret "devkit-secrets/data/myapp" }}{{- .Data.data.key -}}{{end}}
-EOT
+        change_mode   = "signal"
+        change_signal = "SIGINT"
+        data          = <<EOT
+      SOME_SECRET={{ with secret "devkit-secrets/data/myapp" }}{{- .Data.data.key -}}{{end}}
+      EOT
 
         destination = "${NOMAD_SECRETS_DIR}/access.key"
       }

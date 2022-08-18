@@ -31,8 +31,7 @@ job "vault-secrets-noop" {
       }
 
       template {
-        on_error = "ignore"
-        data     = <<EOT
+        data = <<EOT
 {{ with secret "devkit-pki/issue/nomad" "common_name=nomad.service.consul" "ip_sans=127.0.0.1" }}
 {{- .Data.certificate -}}
 {{ end }}
@@ -43,10 +42,9 @@ EOT
       }
 
       template {
-        on_error = "ignore"
-        data     = <<EOT
-SOME_SECRET={{ with secret "devkit-secrets/data/myapp" }}{{- .Data.data.key -}}{{end}}
-EOT
+        data = <<EOT
+      SOME_SECRET={{ with secret "devkit-secrets/data/myapp" }}{{- .Data.data.key -}}{{end}}
+      EOT
 
         destination = "${NOMAD_SECRETS_DIR}/access.key"
         change_mode = "noop"

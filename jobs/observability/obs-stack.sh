@@ -1,5 +1,14 @@
 #!/bin/bash
 
+
+# TODO:
+# - Grafana
+#   - Autoconfig Loki Datasource
+#   - Auto-set password
+#  - Vector
+#   - What does it do?
+# 
+
 # Use this command to add the a registry if you want to use some other registry than default.
 # nomad-pack registry add some-private-registry github.com/<some-org>/<some-pack-registry>
 

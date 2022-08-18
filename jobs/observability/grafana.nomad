@@ -80,6 +80,7 @@ providers:
 EOF
         destination = "/local/grafana/provisioning/dashboards/dashboards.yaml"
       }
+
       template {
         data        = <<EOF
 apiVersion: 1
@@ -110,6 +111,22 @@ datasources:
 
 EOF
         destination = "/local/grafana/provisioning/datasources/datasources.yaml"
+      }
+
+      template {
+        data = <<EOH
+apiVersion: 1
+datasources:
+- name: Loki
+  type: loki
+  access: proxy
+  url: http://{{ range $i, $s := service "loki" }}{{ if eq $i 0 }}{{.Address}}:{{.Port}}{{end}}{{end}}
+  isDefault: false
+  version: 1
+  editable: false
+EOH
+
+        destination = "local/datasources/loki.yaml"
       }
     }
   }
