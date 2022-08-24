@@ -28,7 +28,7 @@ vault write $pkiPath/roles/nomad \
     allowed_domains=service.consul \
     allow_subdomains=true \
     generate_lease=true \
-    max_ttl=1m
+    max_ttl=15s
 
 vault secrets tune -max-lease-ttl=1m $pkiPath
 
