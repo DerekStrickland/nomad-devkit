@@ -1,21 +1,11 @@
-job "canary" {
+job "time-template" {
   datacenters = ["dc1"]
 
   group "cache" {
     count = 6
 
-    update {
-      max_parallel     = 1
-      canary           = 1
-      min_healthy_time = "3s"
-      healthy_deadline = "20s"
-      auto_revert      = true
-      auto_promote     = true
-    }
-
-
     max_client_disconnect = "2m"
-    
+
     spread {
       attribute = "${node.unique.name}"
       weight    = 100
@@ -30,6 +20,11 @@ job "canary" {
     task "redis" {
       driver = "docker"
 
+      template {
+        data        = "---\nkey: {{ timestamp }}"
+        destination = "local/file.yml"
+      }
+
       config {
         image = "redis:3.2"
 
@@ -37,8 +32,8 @@ job "canary" {
       }
 
       resources {
-        cpu    = 500
-        memory = 256
+        cpu    = 100
+        memory = 64
       }
     }
   }

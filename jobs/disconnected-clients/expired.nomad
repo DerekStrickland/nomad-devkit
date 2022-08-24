@@ -1,13 +1,13 @@
-job "spread" {
+job "edge" {
   datacenters = ["dc1"]
 
-  group "cache" {
-    count = 12
+  group "expired" {
+    count = 6
 
-    max_client_disconnect = "2m"
-    
+    max_client_disconnect = "10s"
+
     spread {
-      attribute  = "${attr.unique.hostname}"
+      attribute = "${attr.unique.hostname}"
     }
 
     network {
@@ -21,13 +21,12 @@ job "spread" {
 
       config {
         image = "redis:3.2"
-
         ports = ["db"]
       }
 
       resources {
-        cpu    = 200
-        memory = 128
+        cpu    = 100
+        memory = 64
       }
     }
   }

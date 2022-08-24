@@ -1,13 +1,13 @@
-job "fail" {
+job "edge" {
   datacenters = ["dc1"]
 
   group "fail" {
-    count = 2
+    count = 6
 
-    max_client_disconnect = "2h"
+    max_client_disconnect = "2m"
 
     spread {
-      attribute = "${node.datacenter}"
+      attribute = "${attr.unique.hostname}"
     }
 
     restart {
@@ -22,6 +22,11 @@ job "fail" {
         image   = "busybox:1"
         command = "sh"
         args    = ["/local/script.sh"]
+      }
+
+      resources {
+        cpu    = 100
+        memory = 64
       }
 
       template {

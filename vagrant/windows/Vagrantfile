@@ -1,0 +1,13 @@
+
+
+Vagrant.configure("2") do |config|
+    config.vm.box = "gusztavvargadr/iis"
+end
+
+
+# choco install git.install --params "/GitAndUnixToolsOnPath /WindowsTerminal /NoAutoCrlf" -y
+
+# PowerShell
+# $client = new-object System.Net.WebClient
+# $client.DownloadFile("https://github.com/git-for-windows/git/releases/download/v2.37.1.windows.1/Git-2.37.1-64-bit.exe", "git.exe")
+

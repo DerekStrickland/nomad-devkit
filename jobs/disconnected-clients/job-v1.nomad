@@ -1,17 +1,17 @@
-job "expired" {
+job "edge" {
   datacenters = ["dc1"]
 
-  group "expired" {
-    count = 2
+  group "cache" {
+    count = 6
 
-    max_client_disconnect = "10s"
-    
+    max_client_disconnect = "5m"
+
     spread {
-      attribute = "${node.datacenter}"
+      attribute = "${attr.unique.hostname}"
     }
 
     network {
-      port "db" {
+      port "db-update" {
         to = 6379
       }
     }
@@ -21,13 +21,12 @@ job "expired" {
 
       config {
         image = "redis:3.2"
-
-        ports = ["db"]
+        ports = ["db-update"]
       }
 
       resources {
-        cpu    = 500
-        memory = 256
+        cpu    = 100
+        memory = 64
       }
     }
   }

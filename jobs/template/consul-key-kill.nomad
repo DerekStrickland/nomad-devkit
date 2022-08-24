@@ -1,7 +1,15 @@
-job "example" {
+job "consul-key-kill" {
   datacenters = ["dc1"]
 
   group "cache" {
+    count = 3
+
+    max_client_disconnect = "1h"
+
+    spread {
+      attribute = "{node.unique.name}"
+    }
+
     network {
       port "db" {
         to = 6379
@@ -12,6 +20,8 @@ job "example" {
       driver = "docker"
 
       template {
+        error_mode  = "kill"
+        change_mode = "noop"
         data        = "---\nkey: {{ key \"foo\" }}"
         destination = "local/file.yml"
 
@@ -28,8 +38,8 @@ job "example" {
       }
 
       resources {
-        cpu    = 500
-        memory = 256
+        cpu    = 100
+        memory = 64
       }
     }
   }

@@ -1,14 +1,15 @@
-job "time-template" {
+job "edge" {
   datacenters = ["dc1"]
-  
+
   group "cache" {
     count = 6
 
     max_client_disconnect = "2m"
 
-    spread {
+    constraint {
       attribute = "${node.unique.name}"
-      weight    = 100
+      value     = "nomad-client02"
+      operator  = "="
     }
 
     network {
@@ -20,11 +21,6 @@ job "time-template" {
     task "redis" {
       driver = "docker"
 
-      template {
-        data        = "---\nkey: {{ timestamp }}"
-        destination = "local/file.yml"
-      }
-
       config {
         image = "redis:3.2"
 
@@ -32,8 +28,8 @@ job "time-template" {
       }
 
       resources {
-        cpu    = 500
-        memory = 256
+        cpu    = 100
+        memory = 64
       }
     }
   }
