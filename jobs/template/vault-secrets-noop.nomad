@@ -1,6 +1,11 @@
 job "vault-secrets-noop" {
   datacenters = ["dc1"]
 
+  vault {
+    policies    = ["access-secrets-pki"]
+    change_mode = "noop"
+  }
+
   constraint {
     attribute = "${attr.kernel.name}"
     value     = "linux"
@@ -23,11 +28,6 @@ job "vault-secrets-noop" {
         image   = "busybox:1"
         command = "/bin/sh"
         args    = ["-c", "sleep 3000"]
-      }
-
-      vault {
-        policies    = ["access-secrets-devkit"]
-        change_mode = "noop"
       }
 
       template {

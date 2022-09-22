@@ -17,12 +17,12 @@ vault secrets enable -path=$secretsPath kv-v2
 
 vault kv put $secretsPath/myapp key=$ID
 
-vault secrets tune -max-lease-ttl=1m $secretsPath
+vault secrets tune -max-lease-ttl=90s $secretsPath
 
 # configure PKI secrets engine
 vault secrets enable -path=$pkiPath pki
 
-vault write $pkiPath/root/generate/internal common_name=service.consul ttl=1h
+vault write $pkiPath/root/generate/internal common_name=service.consul ttl=1m
 
 vault write $pkiPath/roles/nomad \
     allowed_domains=service.consul \

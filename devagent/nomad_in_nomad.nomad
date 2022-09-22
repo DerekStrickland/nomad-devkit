@@ -1,10 +1,6 @@
 job "nomad" {
   datacenters = ["dc1"]
 
-  meta {
-    version = "2"
-  }
-
   group "us" {
     task "server" {
       driver = "raw_exec"
@@ -48,7 +44,7 @@ EOF
       }
 
       env {
-        NOMAD_LICENSE_PATH = "/Users/laoqui/license.txt"
+        NOMAD_LICENSE_PATH = "/Users/derekstrickland/nomad/nomad.hclic"
       }
 
       template {
@@ -77,20 +73,54 @@ EOF
   }
 
   group "eu" {
-    task "server" {
+    task "federate" {
+
+      lifecycle {
+        hook    = "poststart"
+        sidecar = false
+      }
+
       driver = "raw_exec"
 
       config {
-        command = "nomad"
-        args    = ["agent", "-config", "local/config.hcl"]
-      }
-
-      env {
-        NOMAD_LICENSE_PATH = "/Users/laoqui/license.txt"
+        command = "bash"
+        args = [
+          "local/federate.sh",
+        ]
       }
 
       template {
         data        = <<EOF
+#!/bin/bash
+
+for i in {1..20}
+do
+  if NOMAD_ADDR="http://127.0.0.1:6646" nomad server join 127.0.0.1:5648; then
+    exit 0
+  else
+    sleep 5
+  fi
+done
+EOF
+        destination = "local/federate.sh"
+      }
+    }
+  }
+
+  task "server" {
+    driver = "raw_exec"
+
+    config {
+      command = "nomad"
+      args    = ["agent", "-config", "local/config.hcl"]
+    }
+
+    env {
+      NOMAD_LICENSE_PATH = "/Users/derekstrickland/nomad/nomad.hclic"
+    }
+
+    template {
+      data        = <<EOF
 data_dir = "{{env "NOMAD_TASK_DIR"}}/data"
 name     = "eu-server"
 region   = "eu"
@@ -106,24 +136,24 @@ ports {
   serf = "6648"
 }
 EOF
-        destination = "local/config.hcl"
-      }
+      destination = "local/config.hcl"
+    }
+  }
+
+  task "client" {
+    driver = "raw_exec"
+
+    config {
+      command = "nomad"
+      args    = ["agent", "-config", "local/config.hcl"]
     }
 
-    task "client" {
-      driver = "raw_exec"
+    env {
+      NOMAD_LICENSE_PATH = "/Users/laoqui/license.txt"
+    }
 
-      config {
-        command = "nomad"
-        args    = ["agent", "-config", "local/config.hcl"]
-      }
-
-      env {
-        NOMAD_LICENSE_PATH = "/Users/laoqui/license.txt"
-      }
-
-      template {
-        data        = <<EOF
+    template {
+      data        = <<EOF
 data_dir = "{{env "NOMAD_TASK_DIR"}}/data"
 name     = "eu-client"
 region   = "eu"
@@ -142,8 +172,7 @@ ports {
   serf = "6658"
 }
 EOF
-        destination = "local/config.hcl"
-      }
+      destination = "local/config.hcl"
     }
   }
 }
