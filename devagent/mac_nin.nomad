@@ -6,12 +6,12 @@ job "nomad" {
       driver = "raw_exec"
 
       config {
-        command = "/opt/gopath/bin/nomad"
+        command = "/Users/code/nomad-nin-debug/nomad"
         args    = ["agent", "-config", "local/config.hcl"]
       }
 
       env {
-        NOMAD_LICENSE_PATH = "/home/vagrant/nomad.hclic"
+        NOMAD_LICENSE_PATH = "/Users/code/nomad.hclic"
       }
 
       template {
@@ -20,6 +20,7 @@ data_dir = "{{env "NOMAD_TASK_DIR"}}/data"
 name     = "us-server"
 region   = "us"
 datacenter = "dc1"
+log_level  = "TRACE"
 
 server {
   enabled          = true
@@ -40,12 +41,12 @@ EOF
       driver = "raw_exec"
 
       config {
-        command = "/opt/gopath/bin/nomad"
+        command = "/Users/code/nomad-nin-debug/nomad"
         args    = ["agent", "-config", "local/config.hcl"]
       }
 
       env {
-        NOMAD_LICENSE_PATH = "/home/vagrant/nomad.hclic"
+        NOMAD_LICENSE_PATH = "/Users/code/nomad.hclic"
       }
 
       template {
@@ -54,6 +55,7 @@ data_dir = "{{env "NOMAD_TASK_DIR"}}/data"
 name     = "us-client"
 region   = "us"
 datacenter = "dc1"
+log_level  = "TRACE"
 
 client {
   enabled = true
@@ -113,12 +115,12 @@ EOF
       driver = "raw_exec"
 
       config {
-        command = "/opt/gopath/bin/nomad"
+        command = "/Users/code/nomad-nin-debug/nomad"
         args    = ["agent", "-config", "local/config.hcl"]
       }
 
       env {
-        NOMAD_LICENSE_PATH = "/home/vagrant/nomad.hclic"
+        NOMAD_LICENSE_PATH = "/Users/code/nomad.hclic"
       }
 
       template {
@@ -127,6 +129,7 @@ data_dir = "{{env "NOMAD_TASK_DIR"}}/data"
 name     = "eu-server"
 region   = "eu"
 datacenter = "dc2"
+log_level  = "TRACE"
 
 server {
   enabled          = true
@@ -147,12 +150,12 @@ EOF
       driver = "raw_exec"
 
       config {
-        command = "/opt/gopath/bin/nomad"
+        command = "/Users/code/nomad-nin-debug/nomad"
         args    = ["agent", "-config", "local/config.hcl"]
       }
 
       env {
-        NOMAD_LICENSE_PATH = "/home/vagrant/nomad.hclic"
+        NOMAD_LICENSE_PATH = "/Users/code/nomad.hclic"
       }
 
       template {
@@ -161,6 +164,7 @@ data_dir = "{{env "NOMAD_TASK_DIR"}}/data"
 name     = "eu-client"
 region   = "eu"
 datacenter = "dc2"
+log_level  = "TRACE"
 
 client {
   enabled = true

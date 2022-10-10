@@ -19,3 +19,4 @@ log/
 *.log
 
 vagrant/windows/.vagrant/
+*/.vagrant/*

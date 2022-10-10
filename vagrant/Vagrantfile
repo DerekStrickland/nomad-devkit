@@ -1,0 +1,62 @@
+# -*- mode: ruby -*-
+# vi: set ft=ruby :
+
+Vagrant.configure(2) do |config|
+  
+    config.vm.box = "bento/ubuntu-20.04"
+    config.vm.hostname = "nomad-dev"
+  
+    # I use a symlink to the root of where I keep all my code projects.
+    config.vm.synced_folder "/Users/code", "/home/vagrant"
+
+    config.vm.network "private_network", ip: "192.168.56.99"
+    config.vm.network :forwarded_port, guest: 4646, host: 4646, auto_correct: true, host_ip: "127.0.0.1"
+    config.vm.network :forwarded_port, guest: 5646, host: 5646, auto_correct: true, host_ip: "127.0.0.1"
+
+    config.vm.provider "virtualbox" do |v|
+        v.memory = "4096"
+        v.cpus = "2"
+        v.customize ["modifyvm", :id, "--cableconnected1", "on"]
+    end
+
+	config.vm.provision "shell",
+		privileged: true,
+		path: '/Users/code/nomad/scripts/vagrant-linux-priv-go.sh'
+
+	config.vm.provision "shell",
+		privileged: true,
+		path: '/Users/code/nomad/scripts/vagrant-linux-priv-config.sh'
+
+	config.vm.provision "shell",
+		privileged: true,
+		path: '/Users/code/nomad/scripts/vagrant-linux-priv-dev.sh'
+
+	config.vm.provision "shell",
+		privileged: true,
+		path: '/Users/code/nomad/scripts/vagrant-linux-priv-docker.sh'
+
+	config.vm.provision "shell",
+		privileged: true,
+		path: '/Users/code/nomad/scripts/vagrant-linux-priv-consul.sh'
+
+	config.vm.provision "shell",
+		privileged: true,
+		path: '/Users/code/nomad/scripts/vagrant-linux-priv-cni.sh'
+
+	config.vm.provision "shell",
+		privileged: true,
+		path: '/Users/code/nomad/scripts/vagrant-linux-priv-vault.sh'
+
+	config.vm.provision "shell",
+		privileged: false,
+		path: '/Users/code/nomad/scripts/vagrant-linux-unpriv-ui.sh'
+
+	config.vm.provision "shell",
+		privileged: true,
+		path: '/Users/code/nomad/scripts/vagrant-linux-priv-buf.sh'
+    
+    config.vm.provision "shell",
+        privileged: true,
+        path: '/Users/code/nomad/scripts/vagrant-linux-priv-zeroconf.sh'
+end
+  

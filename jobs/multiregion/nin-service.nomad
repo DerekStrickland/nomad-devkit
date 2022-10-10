@@ -1,5 +1,5 @@
-job "multiregion-service" {
-  datacenters = ["dc1"] //, "dc2", "dc3"]
+job "nin-multiregion-service" {
+  datacenters = ["dc1"]
   type        = "service"
 
   multiregion {
@@ -9,19 +9,14 @@ job "multiregion-service" {
       on_failure   = "fail_all"
     }
 
-    region "east" {
+    region "us" {
       count       = 1
       datacenters = ["dc1"]
     }
 
-    region "west" {
+    region "eu" {
       count       = 1
       datacenters = ["dc2"]
-    }
-
-    region "north" {
-      count       = 1
-      datacenters = ["dc3"]
     }
 
   }
