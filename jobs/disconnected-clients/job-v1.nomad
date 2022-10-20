@@ -2,7 +2,7 @@ job "edge" {
   datacenters = ["dc1"]
 
   group "cache" {
-    count = 6
+    count = 3
 
     max_client_disconnect = "5m"
 
